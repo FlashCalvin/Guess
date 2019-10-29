@@ -1,5 +1,7 @@
 package com.calvin.guess;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,11 +20,14 @@ import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    TextView num;
+
     TextView heyyou;
     int number;
-
+    int counter;
     int secret = new Random().nextInt(10) +1;
+    private TextView edcounter;
+    private TextView num;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("mainActive","secret"+secret);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        edcounter = findViewById(R.id.counter);
+        edcounter.setText(counter+"");
         num = findViewById(R.id.Num);
         heyyou = findViewById(R.id.heyyou);
 
@@ -46,13 +53,40 @@ public class MainActivity extends AppCompatActivity {
     }
         public void guess(View view) {
         number = Integer.parseInt(num.getText().toString());
+        counter++;
+        edcounter.setText(counter+"");
         if (number < secret){
-         heyyou.setText("你太小");
+         heyyou.setText("太小");
+         new AlertDialog.Builder(MainActivity.this)
+                 .setTitle("Fuck You")
+                 .setMessage("Bigger")
+                 .setPositiveButton("Ok",null)
+                 .show();
         }else if (number > secret){
-            heyyou.setText("太大會受不了");
+            heyyou.setText("太大了");
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Fuck You")
+                    .setMessage("Smaller")
+                    .setPositiveButton("Ok",null)
+                    .show();
+
+
 
         }else{
-            heyyou.setText("我們天生交和");
+            heyyou.setText("耶");
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Fuck You")
+                    .setMessage("JOLIHI")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        int secret2 = new Random().nextInt(10)+1;
+                        secret = secret2;
+                        counter = 0;
+                        Log.d("mainActive","secret:"+secret2);
+                        }
+                    })
+                    .show();
         }
 
 
